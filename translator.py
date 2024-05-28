@@ -18,18 +18,8 @@ def setAll(app, answerObject):
 
 
 def translate(text_input, app, random_start=False):
-    # SET RANDOM
-    if random_start is False:
-        # DEFAULT
-        kanji_name = text_input.get()
-        answerObject = correctName(kanji_name, False)
-    elif random_start is None:
-        # SET NO VALUE
-        setDefault(app)
-        answerObject = False
-    else:
-        # IS RANDOM
-        answerObject = text_input
+    kanji_name = text_input.get()
+    answerObject = correctName(kanji_name, False)
     # CHECK IF KANJI WITH NAME EXISTS
     if answerObject is not False:
         setAll(app, answerObject)
@@ -113,8 +103,3 @@ def correctName(k_name, isKana):
             return x, True
 
     return False
-
-
-def pick_random(app, start_random):
-    if start_random:
-        translate(random.choice(kanji_objects), app, True)

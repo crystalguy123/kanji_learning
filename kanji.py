@@ -13,7 +13,7 @@ class App(ctk.CTk):
 
         # layout
         self.columnconfigure((0, 1, 2, 3), weight=1, uniform="a")
-        self.rowconfigure((0, 1, 2, 3, 4), weight=1, uniform="a")
+        self.rowconfigure((0, 1, 2, 3), weight=1, uniform="a")
 
         # data
         self.kanji_answer = ctk.StringVar(value="kanji")
@@ -21,7 +21,6 @@ class App(ctk.CTk):
         self.kana_answer = ctk.StringVar(value="kana")
         self.vocab_answer = ctk.StringVar(value="vocab")
         self.phonetic_vocab_answer = ctk.StringVar(value="phonetic vocab")
-
         self.text_input = ctk.StringVar(value="")
 
         # font
@@ -29,78 +28,69 @@ class App(ctk.CTk):
         kana_font = ctk.CTkFont(settings.FONT, 40)
         kanji_font = ctk.CTkFont(settings.FONT, 60, weight="bold")
 
-        # start with random kanji, if settings says so
-        translator.pick_random(self, settings.STATE)
+        # KANJI
 
-        # top
+        Kanji(self, self.kanji_answer, kanji_font).grid(column=0, row=0, columnspan=4, sticky="nsew", padx=150, pady=10)
+
+        # ANSWERS
+        AnswerSection(self, self.phonetic_kana_answer, phonetic_font).grid(column=0, row=1, rowspan=2, sticky="nsew", padx=15, pady=15)
+        AnswerSection(self, self.kana_answer, kana_font).grid(column=1, row=1, rowspan=2, sticky="nsew", padx=15, pady=15)
+        AnswerSection(self, self.vocab_answer, kana_font).grid(column=2, row=1, rowspan=2, sticky="nsew", padx=15, pady=15)
+        AnswerSection(self, self.phonetic_vocab_answer, phonetic_font).grid(column=3, row=1, rowspan=2, sticky="nsew", padx=15, pady=15)
+
+        # ENTRY AND BUTTON
+        Submit(self, self.text_input, phonetic_font).grid(row=3, column=0, columnspan=4, rowspan=2, sticky="nsew")
+
+        self.mainloop()
+
+
+class Kanji(ctk.CTkFrame):
+    def __init__(self, master, kanji_answer, font):
+        super().__init__(master, fg_color=settings.BACKGROUND)
         ctk.CTkLabel(self,
                      text="kanji",
-                     font=kanji_font,
-                     textvariable=self.kanji_answer,
+                     font=font,
+                     textvariable=kanji_answer,
                      corner_radius=40,
-                     fg_color=settings.FOREGROUND).grid(column=0, row=0, columnspan=4, sticky="nsew", padx=15, pady=15)
+                     fg_color=settings.FOREGROUND).pack(expand=True, fill="both")
 
-        # middle top
+
+class AnswerSection(ctk.CTkFrame):
+    def __init__(self, master, answer_variable, font):
+        super().__init__(master, fg_color=settings.BACKGROUND)
+
+        # answer
         ctk.CTkLabel(self,
                      text="phonetic",
-                     font=phonetic_font,
-                     textvariable=self.phonetic_kana_answer,
+                     font=font,
+                     textvariable=answer_variable,
                      corner_radius=20,
-                     fg_color=settings.FOREGROUND).grid(column=0, row=1, sticky="nsew", padx=15, pady=15)
-        ctk.CTkLabel(self,
-                     text="kana",
-                     font=kana_font,
-                     textvariable=self.kana_answer,
-                     corner_radius=20,
-                     fg_color=settings.FOREGROUND).grid(column=1, row=1, sticky="nsew", padx=15, pady=15)
-        ctk.CTkLabel(self,
-                     text="vocab kana",
-                     font=kana_font,
-                     textvariable=self.vocab_answer,
-                     corner_radius=20,
-                     fg_color=settings.FOREGROUND).grid(column=2, row=1, sticky="nsew", padx=15, pady=15)
-        ctk.CTkLabel(self,
-                     text="vocab",
-                     font=phonetic_font,
-                     textvariable=self.phonetic_vocab_answer,
-                     corner_radius=20,
-                     fg_color=settings.FOREGROUND).grid(column=3, row=1, sticky="nsew", padx=15, pady=15)
-
-        # middle bottom
+                     fg_color=settings.FOREGROUND).pack(fill="both", expand=True)
+        # text
         ctk.CTkLabel(self,
                      text="Phonetic",
-                     font=phonetic_font,
-                     corner_radius=20).grid(column=0, row=2, sticky="nsew", padx=15)
-        ctk.CTkLabel(self,
-                     text="Kana",
-                     font=phonetic_font,
-                     corner_radius=20).grid(column=1, row=2, sticky="nsew", padx=15)
-        ctk.CTkLabel(self,
-                     text="Vocab Kana",
-                     font=phonetic_font,
-                     corner_radius=20).grid(column=2, row=2, sticky="nsew", padx=15)
-        ctk.CTkLabel(self,
-                     text="Vocab Phonetic",
-                     font=phonetic_font,
-                     corner_radius=20).grid(column=3, row=2, sticky="nsew", padx=15)
+                     font=font,
+                     corner_radius=20).pack(fill="both", expand=True)
 
 
+class Submit(ctk.CTkFrame):
+    def __init__(self, master, text_input, font):
+        super().__init__(master, fg_color=settings.BACKGROUND)
         # bottom
         ctk.CTkEntry(self,
                      placeholder_text="name",
                      justify="center",
-                     font=phonetic_font,
-                     textvariable=self.text_input,
-                     width=400,
+                     font=font,
+                     textvariable=text_input,
                      corner_radius=10,
-                     takefocus=True).grid(column=0, row=3, columnspan=4)
+                     width=500,
+                     takefocus=True).pack(pady=20)
 
         ctk.CTkButton(self,
                       text="Submit",
-                      command=lambda: translator.translate(self.text_input, self),
-                      width=400, height=80,
-                      corner_radius=30).grid(column=0, row=4, columnspan=4, padx=20, pady=10)
-        self.mainloop()
+                      command=lambda: translator.translate(text_input, master),
+                      width=500, height=70,
+                      corner_radius=30).pack()
 
 
 App()
