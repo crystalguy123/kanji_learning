@@ -6,4 +6,4 @@ CORRECT = "#00c624"
 TEXT_COLOR = "#FFF"
 FOREGROUND = "#4f4f4f"
 
-RANDOM = False
+STATE = None
