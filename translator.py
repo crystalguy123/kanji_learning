@@ -1,12 +1,21 @@
 import random
 import hiragana_dict
 
+"""
+set all the text values in the app to default, aka '-'
+"""
+
 
 def setDefault(app):
     app.phonetic_kana_answer.set("-")
     app.kana_answer.set("-")
     app.vocab_answer.set("-")
     app.phonetic_vocab_answer.set("-")
+
+
+"""
+set all the text values in the app to the values given by the answer object
+"""
 
 
 def setAll(app, answerObject):
@@ -17,7 +26,16 @@ def setAll(app, answerObject):
     app.phonetic_vocab_answer.set(answerObject.vocab_phonetic)
 
 
-def translate(text_input, app, random_start=False):
+"""
+get the input, and immediately run it through the name checker, "correctName"
+if is the correct name, immediately set the text to the object
+if it's not, set default, but
+check if the input is two or three characters long, aka length of a kana
+check if the name matches a kana, then set answer or default accordingly 
+"""
+
+
+def translate(text_input, app):
     kanji_name = text_input.get()
     answerObject = correctName(kanji_name, False)
     # CHECK IF KANJI WITH NAME EXISTS
@@ -41,6 +59,12 @@ def translate(text_input, app, random_start=False):
                 setDefault(app)
 
 
+"""
+just the class of the answers
+no helper functions needed
+"""
+
+
 class Answers:
     def __init__(self, kanji, phonetic, kana, name, vocab_phonetic=None, vocab=None):
         self.kanji = kanji
@@ -51,29 +75,36 @@ class Answers:
         self.vocab_phonetic = vocab_phonetic
 
 
-# all the kanji objects
+"""
+this list is every single answer 
+eventually i may move it over to another file
+answers are formatted like this:
+Answers(Kanji, Phonetic Kanji, Kanji Kana, Name, Vocab Phonetic, Vocab Kana
+the name is smack dab in the middle because i forgot about vocab initially and i do not want to change it
+in the list they are also sorted by numbers, general, and vocab
+some are sorted a bit more in those certain subsections but not important enough to be listed here
+"""
 kanji_objects = [
-    # kanji, phonetic, kana, kanji name(s), vocab phonetic, vocab kana
     # numbers
-    Answers("一", "ichi", "いち", "one", "ichi", "いち"),
-    Answers("二", "ni", "に", "two", "ni", "に"),
-    Answers("三", "san", "さん ", "three", "san", "さん "),
-    Answers("七", "shichi", "しち", "seven", "nana", "なな"),
-    Answers("八", "hachi", "はち", "eight", "hachi", "はち"),
-    Answers("九", "ku/kyuu", "く/きゅう", "nine", "ku/kyuu", "く/きゅう"),
-    Answers("一", "jyuu", "いち", "ten", "jyuu", "いち"),
+    Answers("一", "ichi", "いち", ["one", "1"], "ichi", "いち"),
+    Answers("二", "ni", "に", ["two", "ni", "2"], "に"),
+    Answers("三", "san", "さん ", ["three", "3"], "san", "さん "),
+    Answers("七", "shichi", "しち", ["seven", "7"], "nana", "なな"),
+    Answers("八", "hachi", "はち", ["eight", "8"], "hachi", "はち"),
+    Answers("九", "ku/kyuu", "く/きゅう", ["nine", "9"], "ku/kyuu", "く/きゅう"),
+    Answers("一", "jyuu", "いち", ["ten", "10"], "jyuu", "いち"),
 
-    # other
+    # general
     Answers("工", "kou/ku", "こう/く", "construction"),
-    Answers("人", "hito", "ひと", "person"),
+    Answers("人", "nin, jin", "にん, じん ", "person", "hito", "ひと", ),
     Answers("山", "san", "さん", "mountain", "yama", "やま"),
     Answers("口", "ku", "く", "mouth", "kuchi", "くち"),
     Answers("上", "jyou", "じょう", "above", "うえ", "ue"),
-    Answers("下", "ka", "か", "below"),
+    Answers("下", "ka", "か", "below", "shita", "した"),
     Answers("入", "nyuu", "にゅう", "enter"),
     Answers("女", "jo", "じょ", "woman", "onna", "おんな"),
     Answers("川", "kawa", "かわ", "river", "kawa", "かわ"),
-    Answers("力", "ryoku", "りょく", "power"),
+    Answers("力", "ryoku", "りょく", "power", "shikara", "ちから"),
     Answers("大", "tai", "たい", "big"),
 
     # vocab
@@ -85,23 +116,34 @@ kanji_objects = [
     # counts
     Answers("一つ", "-", "-", "one thing", "hitotsu", "ひとつ"),
     Answers("二つ", "-", "-", ["two things", "two thing"], "futotsu", "ふたつ"),
-    Answers("二人", "-", "-", ["pair", "couple", "two people"], "hitotsu", "ひとつ"),
+    Answers("二人", "-", "-", ["pair", "couple", "two people"], "futari", "ふたり"),
     Answers("三つ", "-", "-", "three things", "mittsu", "みっつ"),
     Answers("三人", "-", "-", "three people", "sannin", "さんにん"),
     Answers("七つ", "-", "-", "seven things", "nanatsu", "ななつ"),
     Answers("八つ", "-", "-", "eight things", "yottsu", "やっつ"),
 ]
 
+"""
+if this gets called, it means the input is a kana, and thus more than three characters long
+attempt to return a kana from the hiragana dictionary with k_name key
+if it doesn't work, aka there is no kana, return false
+"""
 
-# check if name is a real name
+
 def correctName(k_name, isKana):
-    if isKana:  # the object is one or two characters long, so check if matches in kana list
+    if isKana:
         try:
             return hiragana_dict.kana_dict[k_name]
         except KeyError:
 
             return False
-    # loop through all the kanji's names to confirm if the name provided is actually a real name, then return the kanji object if true
+
+    """
+    figure out if its a list
+    if it's a list, check in that list for names
+    if not a list, just look for if the name itself matches
+    if either match, return the answer object
+    """
     for x in kanji_objects:
         if type(x.name) == list:
             for y in x.name:

@@ -33,8 +33,8 @@ class App(ctk.CTk):
         Kanji(self, self.kanji_answer, kanji_font).grid(column=0, row=0, columnspan=4, sticky="nsew", padx=150, pady=10)
 
         # ANSWERS
-        AnswerSection(self, self.phonetic_kana_answer, phonetic_font, "Phonetic").grid(column=0, row=1, rowspan=2, sticky="nsew", padx=15, pady=15)
-        AnswerSection(self, self.kana_answer, kana_font, "Kana").grid(column=1, row=1, rowspan=2, sticky="nsew", padx=15, pady=15)
+        AnswerSection(self, self.phonetic_kana_answer, phonetic_font, "Kanji Phonetic").grid(column=0, row=1, rowspan=2, sticky="nsew", padx=15, pady=15)
+        AnswerSection(self, self.kana_answer, kana_font, "Kanji Kana").grid(column=1, row=1, rowspan=2, sticky="nsew", padx=15, pady=15)
         AnswerSection(self, self.vocab_answer, kana_font, "Vocab Kana").grid(column=2, row=1, rowspan=2, sticky="nsew", padx=15, pady=15)
         AnswerSection(self, self.phonetic_vocab_answer, phonetic_font, "Vocab Phonetic").grid(column=3, row=1, rowspan=2, sticky="nsew", padx=15, pady=15)
 
