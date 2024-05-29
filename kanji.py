@@ -33,10 +33,10 @@ class App(ctk.CTk):
         Kanji(self, self.kanji_answer, kanji_font).grid(column=0, row=0, columnspan=4, sticky="nsew", padx=150, pady=10)
 
         # ANSWERS
-        AnswerSection(self, self.phonetic_kana_answer, phonetic_font).grid(column=0, row=1, rowspan=2, sticky="nsew", padx=15, pady=15)
-        AnswerSection(self, self.kana_answer, kana_font).grid(column=1, row=1, rowspan=2, sticky="nsew", padx=15, pady=15)
-        AnswerSection(self, self.vocab_answer, kana_font).grid(column=2, row=1, rowspan=2, sticky="nsew", padx=15, pady=15)
-        AnswerSection(self, self.phonetic_vocab_answer, phonetic_font).grid(column=3, row=1, rowspan=2, sticky="nsew", padx=15, pady=15)
+        AnswerSection(self, self.phonetic_kana_answer, phonetic_font, "Phonetic").grid(column=0, row=1, rowspan=2, sticky="nsew", padx=15, pady=15)
+        AnswerSection(self, self.kana_answer, kana_font, "Kana").grid(column=1, row=1, rowspan=2, sticky="nsew", padx=15, pady=15)
+        AnswerSection(self, self.vocab_answer, kana_font, "Vocab Kana").grid(column=2, row=1, rowspan=2, sticky="nsew", padx=15, pady=15)
+        AnswerSection(self, self.phonetic_vocab_answer, phonetic_font, "Vocab Phonetic").grid(column=3, row=1, rowspan=2, sticky="nsew", padx=15, pady=15)
 
         # ENTRY AND BUTTON
         Submit(self, self.text_input, phonetic_font).grid(row=3, column=0, columnspan=4, rowspan=2, sticky="nsew")
@@ -56,7 +56,7 @@ class Kanji(ctk.CTkFrame):
 
 
 class AnswerSection(ctk.CTkFrame):
-    def __init__(self, master, answer_variable, font):
+    def __init__(self, master, answer_variable, font, type):
         super().__init__(master, fg_color=settings.BACKGROUND)
 
         # answer
@@ -68,7 +68,7 @@ class AnswerSection(ctk.CTkFrame):
                      fg_color=settings.FOREGROUND).pack(fill="both", expand=True)
         # text
         ctk.CTkLabel(self,
-                     text="Phonetic",
+                     text=type,
                      font=font,
                      corner_radius=20).pack(fill="both", expand=True)
 

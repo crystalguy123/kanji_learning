@@ -10,11 +10,11 @@ def setDefault(app):
 
 
 def setAll(app, answerObject):
-    app.kanji_answer.set(answerObject[0].kanji)
-    app.phonetic_kana_answer.set(answerObject[0].phonetic)
-    app.kana_answer.set(answerObject[0].kana)
-    app.vocab_answer.set(answerObject[0].vocab)
-    app.phonetic_vocab_answer.set(answerObject[0].vocab_phonetic)
+    app.kanji_answer.set(answerObject.kanji)
+    app.phonetic_kana_answer.set(answerObject.phonetic)
+    app.kana_answer.set(answerObject.kana)
+    app.vocab_answer.set(answerObject.vocab)
+    app.phonetic_vocab_answer.set(answerObject.vocab_phonetic)
 
 
 def translate(text_input, app, random_start=False):
@@ -53,7 +53,7 @@ class Answers:
 
 # all the kanji objects
 kanji_objects = [
-    # kanji, phonetic, kana, kanji name, vocab
+    # kanji, phonetic, kana, kanji name(s), vocab phonetic, vocab kana
     # numbers
     Answers("一", "ichi", "いち", "one", "ichi", "いち"),
     Answers("二", "ni", "に", "two", "ni", "に"),
@@ -66,7 +66,7 @@ kanji_objects = [
     # other
     Answers("工", "kou/ku", "こう/く", "construction"),
     Answers("人", "hito", "ひと", "person"),
-    Answers("山", "san", "さん", "mountain"),
+    Answers("山", "san", "さん", "mountain", "yama", "やま"),
     Answers("口", "ku", "く", "mouth", "kuchi", "くち"),
     Answers("上", "jyou", "じょう", "above", "うえ", "ue"),
     Answers("下", "ka", "か", "below"),
@@ -77,16 +77,20 @@ kanji_objects = [
     Answers("大", "tai", "たい", "big"),
 
     # vocab
-    Answers("人口", "-", "-", "population", "jinkou", "じんこう",),
-    Answers("一人", "-", "-", "alone", "hitori", "ひとり",),
-    Answers("人工", "-", "-", "artificial", "jinkou", "じんこう",),
-    Answers("上げる", "-", "-", "to lift something", "ageru", "あげる",),
+    Answers("人口", "-", "-", "population", "jinkou", "じんこう", ),
+    Answers("一人", "-", "-", ["alone", "one person", "hitori gotoh"], "hitori", "ひとり", ),
+    Answers("人工", "-", "-", ["artificial", "man made"], "jinkou", "じんこう", ),
+    Answers("上げる", "-", "-", ["to lift something", "to raise something"], "ageru", "あげる", ),
+    Answers("上げる", "-", "-", ["fuji", "mt fuji", "mountain fuji", "mount fuji"], "fujisan", "ふじさん"),
     # counts
     Answers("一つ", "-", "-", "one thing", "hitotsu", "ひとつ"),
+    Answers("二つ", "-", "-", ["two things", "two thing"], "futotsu", "ふたつ"),
+    Answers("二人", "-", "-", ["pair", "couple", "two people"], "hitotsu", "ひとつ"),
     Answers("三つ", "-", "-", "three things", "mittsu", "みっつ"),
     Answers("三人", "-", "-", "three people", "sannin", "さんにん"),
+    Answers("七つ", "-", "-", "seven things", "nanatsu", "ななつ"),
     Answers("八つ", "-", "-", "eight things", "yottsu", "やっつ"),
-    Answers("七つ", "-", "-", "seven things", "nanatsu", "ななつ")]
+]
 
 
 # check if name is a real name
@@ -99,7 +103,12 @@ def correctName(k_name, isKana):
             return False
     # loop through all the kanji's names to confirm if the name provided is actually a real name, then return the kanji object if true
     for x in kanji_objects:
-        if x.name == k_name:
-            return x, True
+        if type(x.name) == list:
+            for y in x.name:
+                if y == k_name:
+                    return x
+        else:
+            if x.name == k_name:
+                return x
 
     return False
