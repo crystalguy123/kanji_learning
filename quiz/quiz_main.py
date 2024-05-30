@@ -1,17 +1,18 @@
 import customtkinter as ctk
 
 import settings
-import dict.dictionary_page as dictionary_pages
+import dict.dictionary_page as dictionary_page
 import quiz.quiz_list as quiz_list
 import dict.translator as translator
 
 
 class Quiz_Page(ctk.CTkFrame):
-    def __init__(self, master):
+    def __init__(self, master, app):
         super().__init__(master)
 
         self.master = master
         self.frame = ctk.CTkFrame(self.master, fg_color=settings.BACKGROUND)
+        self.app = app
 
         # data
         self.kanji_answer = ctk.StringVar()
@@ -43,7 +44,13 @@ class Quiz_Page(ctk.CTkFrame):
         # BACK BUTTON
         self.back = Back_Button(self.frame,
                                 kanji_font,
-                                self).grid(column=0, row=2, padx=50, pady=20, sticky="w")
+                                self).grid(column=0, row=2, padx=50, pady=20, sticky="nsew")
+
+        # DICT BUTTON
+
+        self.back = Dict_Button(self.frame,
+                                kanji_font,
+                                self).grid(column=2, row=2, padx=50, pady=25, sticky="nsew")
 
         # REVEAL BUTTON
         self.reveal = Whats_Answer_Button(self.frame,
@@ -55,6 +62,18 @@ class Quiz_Page(ctk.CTkFrame):
 
     def go_back(self):
         self.frame.pack_forget()
+        self.app.home_page()
+
+    def quiz_to_dict(self):
+        self.app.make_dict_page()
+        self.frame.pack_forget()
+        to_load = self.kanji_answer.get()
+        if not to_load[0].isalpha():
+            x = to_load.index("'")
+            y = to_load.index(",")
+            to_load = to_load[x:y]
+            to_load = to_load.replace("'", "")
+        self.app.dictionary_page.load_from_quiz(to_load)
 
     def updateVariables(self):
         global answers
@@ -101,7 +120,7 @@ class Back_Button(ctk.CTkFrame):
 
         ctk.CTkButton(self, text="Back",
                       font=font,
-                      command=mast2.go_back).place(relx=0, rely=1, x=25, y=-25, anchor="sw")
+                      command=mast2.go_back).pack(side="right", expand=True)
 
 
 class Whats_Answer_Button(ctk.CTkFrame):
@@ -127,3 +146,12 @@ class Whats_Answer_Button(ctk.CTkFrame):
         else:
             ans = answers[1]
             return ans
+
+
+class Dict_Button(ctk.CTkFrame):
+    def __init__(self, master, font, mast2):
+        super().__init__(master, fg_color="transparent")
+
+        ctk.CTkButton(self, text="Load in\nDictionary",
+                      font=font,
+                      command=mast2.quiz_to_dict).pack(side="right", expand=True)

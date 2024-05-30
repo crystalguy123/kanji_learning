@@ -23,6 +23,10 @@ def setAll(app, answerObject):
     app.kana_answer.set(answerObject.kana)
     app.vocab_answer.set(answerObject.vocab)
     app.phonetic_vocab_answer.set(answerObject.vocab_phonetic)
+    if type(answerObject.name) == list:
+        app.actual_name.set(answerObject.name[0])
+    else:
+        app.actual_name.set(answerObject.name)
 
 
 """
@@ -35,7 +39,6 @@ check if the name matches a kana, then set answer or default accordingly
 
 
 def translate(text_input, app):
-    print(text_input, app)
     if type(text_input) == str:
         kanji_name = text_input
     else:
@@ -50,16 +53,22 @@ def translate(text_input, app):
         app.kanji_answer.set("Unknown Kanji! Typo?")
         setDefault(app)
         # CHECK IF KANA, IF NOT KANJI (IN THIS ORDER SO KANJI LIKE "TEN" DON'T GET COUNTED AS KANA
-        if len(text_input.get()) < 4:
+        if type(text_input) == str:
+            kanji_name = text_input
+        else:
             kanji_name = text_input.get()
+        if len(kanji_name) < 4:
             kana = correctName(kanji_name, True)
             if kana is not False:
                 # SET KANA
                 app.kanji_answer.set(kana)
+                app.actual_name.set(kanji_name)
+
                 setDefault(app)
             else:
                 # UNKNOWN KANA
                 app.kanji_answer.set("Unknown Kana! Typo?")
+                app.kanji_answer.set("-")
                 setDefault(app)
 
 
@@ -96,7 +105,7 @@ kanji_objects = [
     Answers("七", "shichi", "しち", ["seven", "7"], "nana", "なな"),
     Answers("八", "hachi", "はち", ["eight", "8"], "hachi", "はち"),
     Answers("九", "ku/kyuu", "く/きゅう", ["nine", "9"], "ku/kyuu", "く/きゅう"),
-    Answers("一", "jyuu", "いち", ["ten", "10"], "jyuu", "いち"),
+    Answers("十", "jyuu", "いち", ["ten", "10"], "jyuu", "いち"),
 
     # general
     Answers("工", "kou/ku", "こう/く", "construction"),

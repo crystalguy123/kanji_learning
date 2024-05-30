@@ -19,6 +19,7 @@ class Dictionary_Page(ctk.CTkFrame):
         self.kana_answer = ctk.StringVar(value="kana")
         self.vocab_answer = ctk.StringVar(value="vocab")
         self.phonetic_vocab_answer = ctk.StringVar(value="phonetic vocab")
+        self.actual_name = ctk.StringVar(value="name")
         self.text_input = ctk.StringVar(value="")
 
         # fonts
@@ -28,8 +29,14 @@ class Dictionary_Page(ctk.CTkFrame):
 
         # KANJI
 
-        Kanji(self.frame, self.kanji_answer, kanji_font).grid(column=0, row=0, columnspan=4, sticky="nsew", padx=150,
-                                                              pady=10)
+        Kanji(self.frame, self.kanji_answer, kanji_font).grid(column=0, row=0, columnspan=2,
+                                                                                sticky="nsew", padx=15,
+                                                                                pady=10)
+
+        # NAME
+        Name(self.frame, kanji_font, self.actual_name).grid(column=2, row=0, columnspan=2,
+                                                                                sticky="nsew", padx=15,
+                                                                                pady=10)
 
         # ANSWERS
         AnswerSection(self.frame, self.phonetic_kana_answer, phonetic_font, "Kanji Phonetic").grid(column=0, row=1,
@@ -65,16 +72,30 @@ class Dictionary_Page(ctk.CTkFrame):
         self.frame.pack_forget()
         #self.app.start_page()
 
+    def load_from_quiz(self, to_load):
+        translator.translate(to_load, self)
+
 
 class Kanji(ctk.CTkFrame):
     def __init__(self, master, kanji_answer, font):
-        super().__init__(master, fg_color=settings.BACKGROUND)
+        super().__init__(master, fg_color="transparent")
         ctk.CTkLabel(self,
                      text="kanji",
                      font=font,
                      textvariable=kanji_answer,
                      corner_radius=40,
-                     fg_color=settings.FOREGROUND).pack(expand=True, fill="both")
+                     fg_color=settings.FOREGROUND).pack(side="left", expand=True, fill="both", padx=15)
+
+
+class Name(ctk.CTkFrame):
+    def __init__(self, master, font, actual_name):
+        super().__init__(master, fg_color="transparent")
+        ctk.CTkLabel(self,
+                     text="name",
+                     font=font,
+                     textvariable=actual_name,
+                     corner_radius=40,
+                     fg_color=settings.FOREGROUND).pack(side="left", expand=True, fill="both", padx=15)
 
 
 class AnswerSection(ctk.CTkFrame):
