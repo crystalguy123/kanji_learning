@@ -27,10 +27,13 @@ def getAnswers():
 def checkAnswer(response, answer, app):
     if "," in answer.get():
         answer = answer.get().replace("(", "").replace(")", "").replace("'", "").split(",")
+        print(answer)
         for x in answer:
             x.lstrip(" ")
-            if response.get() == x:
-                app.updateVariables()
+            if x[0] == " ":
+                x = x[1:]
+                if response.get() == x:
+                    app.updateVariables()
     else:
         if response.get() == answer.get():
             app.updateVariables()

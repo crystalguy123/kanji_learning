@@ -3,6 +3,7 @@ import customtkinter as ctk
 import quiz.quiz_main
 import settings
 import dict.dictionary_page as dictionary_page
+import dict.translator as translator
 
 
 class App(ctk.CTk):
@@ -39,9 +40,16 @@ class App(ctk.CTk):
         self.home_frame.pack_forget()
         self.dictionary_page.start_dict_page()
 
+    def load_in_dict(self):
+        self.dictionary_page.text_input.set("woman")
+        translator.translate("woman", self.dictionary_page)
+
     def make_quiz_page(self):
         self.home_frame.pack_forget()
         self.quiz_page.start_quiz_page()
+
+    def remove_frame(self):
+        self.home_frame.pack_forget()
 
 
 App()

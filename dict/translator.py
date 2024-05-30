@@ -35,7 +35,12 @@ check if the name matches a kana, then set answer or default accordingly
 
 
 def translate(text_input, app):
-    kanji_name = text_input.get()
+    print(text_input, app)
+    if type(text_input) == str:
+        kanji_name = text_input
+    else:
+        kanji_name = text_input.get()
+
     answerObject = correctName(kanji_name, False)
     # CHECK IF KANJI WITH NAME EXISTS
     if answerObject is not False:

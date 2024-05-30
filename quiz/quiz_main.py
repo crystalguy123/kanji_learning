@@ -1,8 +1,9 @@
 import customtkinter as ctk
 
 import settings
-import dict.translator as translator
+import dict.dictionary_page as dictionary_pages
 import quiz.quiz_list as quiz_list
+import dict.translator as translator
 
 
 class Quiz_Page(ctk.CTkFrame):
@@ -11,6 +12,7 @@ class Quiz_Page(ctk.CTkFrame):
 
         self.master = master
         self.frame = ctk.CTkFrame(self.master, fg_color=settings.BACKGROUND)
+
         # data
         self.kanji_answer = ctk.StringVar()
         self.kanji_question = ctk.StringVar()
@@ -28,7 +30,8 @@ class Quiz_Page(ctk.CTkFrame):
         # QUIZ BOX
         self.quiz_box = Quiz_Box(self.frame,
                                  kanji_font,
-                                 self.kanji_question).grid(column=0, row=0, columnspan=3, padx=50, pady=20, sticky="nsew")
+                                 self.kanji_question).grid(column=0, row=0, columnspan=3, padx=50, pady=20,
+                                                           sticky="nsew")
 
         # SUBMIT ANSWER BUTTON
         self.submit = Submit(self.frame,
@@ -40,7 +43,12 @@ class Quiz_Page(ctk.CTkFrame):
         # BACK BUTTON
         self.back = Back_Button(self.frame,
                                 kanji_font,
-                                self).place(relx=0, rely=1, anchor="sw")
+                                self).grid(column=0, row=2, padx=50, pady=20, sticky="w")
+
+        # REVEAL BUTTON
+        self.reveal = Whats_Answer_Button(self.frame,
+                                          kanji_font).grid(column=0, row=1, columnspan=3, padx=50, pady=20,
+                                                           sticky="nsew")
 
     def start_quiz_page(self):
         self.frame.pack(fill="both", expand=True)
@@ -49,7 +57,9 @@ class Quiz_Page(ctk.CTkFrame):
         self.frame.pack_forget()
 
     def updateVariables(self):
+        global answers
         answers = quiz_list.getAnswers()
+        print(answers)
         self.kanji_question.set(answers[0])
         self.kanji_answer.set(answers[1])
 
@@ -67,7 +77,7 @@ class Quiz_Box(ctk.CTkFrame):
 
 
 class Submit(ctk.CTkFrame):
-    def __init__(self, master, font, response_answer, kanji_answer, answersDesination):
+    def __init__(self, master, font, response_answer, kanji_answer, answersDestination):
         super().__init__(master, fg_color=settings.BACKGROUND)
         ctk.CTkEntry(self,
                      placeholder_text="name",
@@ -80,7 +90,7 @@ class Submit(ctk.CTkFrame):
 
         ctk.CTkButton(self,
                       text="Submit",
-                      command=lambda: quiz_list.checkAnswer(response_answer, kanji_answer, answersDesination),
+                      command=lambda: quiz_list.checkAnswer(response_answer, kanji_answer, answersDestination),
                       width=500, height=70,
                       corner_radius=30).pack()
 
@@ -92,3 +102,28 @@ class Back_Button(ctk.CTkFrame):
         ctk.CTkButton(self, text="Back",
                       font=font,
                       command=mast2.go_back).place(relx=0, rely=1, x=25, y=-25, anchor="sw")
+
+
+class Whats_Answer_Button(ctk.CTkFrame):
+    def __init__(self, master, font):
+        super().__init__(master, fg_color="transparent")
+
+        self.answer_text = ctk.StringVar()
+
+        ctk.CTkButton(self, text="Reveal",
+                      font=font,
+                      command=lambda: self.answer_text.set(self.getAnswer())).place(relx=0.5, rely=0.3, anchor="center")
+
+        ctk.CTkLabel(self, textvariable=self.answer_text, justify="center", font=font).place(relx=0.5, rely=0.8,
+                                                                                             anchor="center")
+
+    def getAnswer(self):
+        ans = ""
+        if type(answers[1]) == list:
+            for x in answers[1]:
+                ans += x + ", "
+            ans = ans.lstrip(" ")
+            return ans[:-2]
+        else:
+            ans = answers[1]
+            return ans

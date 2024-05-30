@@ -28,28 +28,35 @@ class Dictionary_Page(ctk.CTkFrame):
 
         # KANJI
 
-        Kanji(self.frame, self.kanji_answer, kanji_font).grid(column=0, row=0, columnspan=4, sticky="nsew", padx=150, pady=10)
+        Kanji(self.frame, self.kanji_answer, kanji_font).grid(column=0, row=0, columnspan=4, sticky="nsew", padx=150,
+                                                              pady=10)
 
         # ANSWERS
-        AnswerSection(self.frame, self.phonetic_kana_answer, phonetic_font, "Kanji Phonetic").grid(column=0, row=1, rowspan=2,
-                                                                                             sticky="nsew", padx=15,
-                                                                                             pady=15)
-        AnswerSection(self.frame, self.kana_answer, kana_font, "Kanji Kana").grid(column=1, row=1, rowspan=2, sticky="nsew",
-                                                                            padx=15, pady=15)
-        AnswerSection(self.frame, self.vocab_answer, kana_font, "Vocab Kana").grid(column=2, row=1, rowspan=2, sticky="nsew",
-                                                                             padx=15, pady=15)
+        AnswerSection(self.frame, self.phonetic_kana_answer, phonetic_font, "Kanji Phonetic").grid(column=0, row=1,
+                                                                                                   rowspan=2,
+                                                                                                   sticky="nsew",
+                                                                                                   padx=15,
+                                                                                                   pady=15)
+        AnswerSection(self.frame, self.kana_answer, kana_font, "Kanji Kana").grid(column=1, row=1, rowspan=2,
+                                                                                  sticky="nsew",
+                                                                                  padx=15, pady=15)
+        AnswerSection(self.frame, self.vocab_answer, kana_font, "Vocab Kana").grid(column=2, row=1, rowspan=2,
+                                                                                   sticky="nsew",
+                                                                                   padx=15, pady=15)
         AnswerSection(self.frame, self.phonetic_vocab_answer, phonetic_font, "Vocab Phonetic").grid(column=3, row=1,
-                                                                                              rowspan=2, sticky="nsew",
-                                                                                              padx=15, pady=15)
+                                                                                                    rowspan=2,
+                                                                                                    sticky="nsew",
+                                                                                                    padx=15, pady=15)
 
         # ENTRY AND BUTTON
-        Submit(self.frame, self.text_input, phonetic_font, self).grid(row=3, column=0, columnspan=4, rowspan=2, sticky="nsew")
+        self.submit = Submit(self.frame, self.text_input, phonetic_font, self).grid(row=3, column=0, columnspan=4,
+                                                                                    rowspan=2,
+                                                                                    sticky="nsew")
 
         # BACK BUTTON
         self.back = Back_Button(self.frame,
                                 kanji_font,
                                 self).place(relx=0, rely=1, anchor="sw")
-
 
     def start_dict_page(self):
         self.frame.pack(fill="both", expand=True)
