@@ -1,9 +1,10 @@
 import dict.hiragana_dict as hiragana_dict
 import dict.translator as translator
+import dict.kanjis as kanjis
 import random
 
 
-kanji_list = translator.kanji_objects
+kanji_list = kanjis.kanji_objects
 
 
 def getAnswers():

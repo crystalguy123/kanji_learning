@@ -78,7 +78,6 @@ class Quiz_Page(ctk.CTkFrame):
     def updateVariables(self):
         global answers
         answers = quiz_list.getAnswers()
-        print(answers)
         self.kanji_question.set(answers[0])
         self.kanji_answer.set(answers[1])
 
