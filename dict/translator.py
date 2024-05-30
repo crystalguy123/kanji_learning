@@ -116,7 +116,7 @@ kanji_objects = [
     Answers("一人", "-", "-", ["alone", "one person", "hitori gotoh"], "hitori", "ひとり", ),
     Answers("人工", "-", "-", ["artificial", "man made"], "jinkou", "じんこう", ),
     Answers("上げる", "-", "-", ["to lift something", "to raise something"], "ageru", "あげる", ),
-    Answers("上げる", "-", "-", ["fuji", "mt fuji", "mountain fuji", "mount fuji"], "fujisan", "ふじさん"),
+    Answers("ふじ山", "-", "-", ["fuji", "mt fuji", "mountain fuji", "mount fuji"], "fujisan", "ふじさん"),
     # counts
     Answers("一つ", "-", "-", "one thing", "hitotsu", "ひとつ"),
     Answers("二つ", "-", "-", "two things", "futotsu", "ふたつ"),
