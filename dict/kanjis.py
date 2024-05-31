@@ -12,7 +12,9 @@ kanji_objects = [
     # numbers
     Answers("一", "ichi", "いち", ["one", "1"], "ichi", "いち"),
     Answers("二", "ni", "に", ["two", "ni", "2"], "に"),
-    Answers("三", "san", "さん ", ["three", "3"], "san", "さん "),
+    Answers("三", "san", "さん", ["three", "3"], "san", "さん"),
+    Answers("五", "-", "-", ["five", "5"], "-", "-"),
+    Answers("六", "roku", "ろく", ["six", "6"], "-", "-"),
     Answers("七", "shichi", "しち", ["seven", "7"], "nana", "なな"),
     Answers("八", "hachi", "はち", ["eight", "8"], "hachi", "はち"),
     Answers("九", "ku/kyuu", "く/きゅう", ["nine", "9"], "ku/kyuu", "く/きゅう"),
@@ -48,11 +50,24 @@ kanji_objects = [
     Answers("儿", "-", "-", "legs"),
     Answers("冂", "-", "-", "head"),
     Answers("メ", "-", "-", "treasure"),
+    Answers("夕", "-", "-", "evening"),
+    Answers("子", "-", "-", "child"),
+    Answers("小", "-", "-", "small"),
+    Answers("弓", "-", "-", "bow"),
+    Answers("尸", "-", "-", "flag"),
+    Answers("彡", "-", "-", "hair"),
+    Answers("天", "-", "-", "heaven"),
+    Answers("手", "-", "-", "hand"),
+    # kanji LEVEL 2
     Answers("丸", "maru", "まる", "circle"),
     Answers("才", "sai", "さい", "talent"),
+    Answers("日", "nicha, jitsu", "にち、じつ", ["sun", "day"]),
 
     # vocab LEVEL 2
     Answers("入る", "-", "-", ["to enter", "to go in"], "hairu", "はいる"),
+    Answers("下げる", "-", "-", "to lower something", "sageru", "さげる"),
+    Answers("下さい", "-", "-", "please give me", "kudasai", "ください"),
+    Answers("入り口", "-", "-", "entrance", "iriguchi", "いりぐち"),
 
     # counts
     Answers("一つ", "-", "-", "one thing", "hitotsu", "ひとつ"),
